@@ -1,2 +1,1 @@
-stp.svd-core-bundle
-===================
+Core Bundle
