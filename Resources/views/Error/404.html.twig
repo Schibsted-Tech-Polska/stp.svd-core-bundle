@@ -1,0 +1,10 @@
+{% extends 'SvdCoreBundle::layout_error.html.twig' %}
+
+{% block content %}
+    <h1>{{ 'error.404.title'|trans({'%status_code%': status_code, '%status_text%': status_text }) }}</h1>
+    <h2>{{ 'error.404.subtitle'|trans }}</h2>
+
+    <div>
+        {{ 'error.404.description'|trans|raw }}
+    </div>
+{% endblock %}

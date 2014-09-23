@@ -1,0 +1,23 @@
+{% extends "SvdCoreBundle::base.html.twig" %}
+
+{% block body %}
+    <div class="container" id="page">
+        <div class="row">
+            <header class="span12">
+                {{ include ("SvdCoreBundle:Common:_header.html.twig") }}
+            </header>
+        </div>
+
+        <div class="row">
+            <article class="span12">
+                {% block content %}{% endblock %}
+            </article>
+        </div>
+
+        <div class="row">
+            <footer class="span12">
+                {{ render (controller("SvdCoreBundle:Common:footer")) }}
+            </footer>
+        </div>
+    </div>
+{% endblock %}

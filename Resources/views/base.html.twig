@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}" {{ sonata_seo_html_attributes() }}>
+    <head>
+        <meta charset="{{ _charset  }}" />
+        {% if app.environment == 'prod' and google.webmaster_tools %}
+            <meta name="google-site-verification" content="{{ google.webmaster_tools }}" />
+        {% endif %}
+        {{ sonata_seo_metadatas() }}
+        {{ sonata_seo_title() }}
+
+        {% block shortcut_icon %}
+            <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+            <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon-iphone.png') }}" />
+            <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon-ipad.png') }}" sizes="72x72" />
+            <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon-iphone.png') }}" sizes="114x114" />
+            <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon-ipad.png') }}" sizes="144x144" />
+        {% endblock %}
+
+        {% block include_top %}{% endblock %}
+
+        {% block base_top %}{% endblock %}
+    </head>
+    <body id="top">
+        {% block body %}{% endblock %}
+
+        {% block include_bottom %}{% endblock %}
+
+        {% block base_bottom %}
+            {% if app.environment == 'prod' and google.analytics.code %}
+                <script type="text/javascript">/* <![CDATA[ */
+                    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+                    ga('create', '{{ google.analytics.code }}'{% if google.analytics.name
+                    %}, '{{ google.analytics.name }}'{% endif %});
+                    ga('send', 'pageview');
+                /* ]]> */</script>
+            {% endif %}
+        {% endblock %}
+    </body>
+</html>

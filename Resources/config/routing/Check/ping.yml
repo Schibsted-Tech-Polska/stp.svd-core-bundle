@@ -1,0 +1,6 @@
+ping:
+    path:                               /ping
+    defaults:
+        _controller:                    SvdCoreBundle:Check:ping
+    requirements:
+        _method:                        DELETE|GET|POST|PUT

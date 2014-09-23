@@ -1,0 +1,30 @@
+parameters:
+    svd_core.controller.error.class:    Svd\CoreBundle\Controller\ErrorController
+
+    svd_core.error.numbers:
+        -                               403
+        -                               404
+
+    svd_core.menu_builder.class:        Svd\CoreBundle\Menu\MenuBuilder
+
+    svd_core.seo_page.class:            Svd\CoreBundle\Seo\SeoPage
+
+services:
+    svd_core.controller.error:
+        class:                          %svd_core.controller.error.class%
+        arguments:
+            -                           "@twig"
+            -                           %kernel.debug%
+            -                           %svd_core.error.numbers%
+            -                           "@svd_core.seo.page"
+
+    svd_core.menu_builder:
+        class:                          %svd_core.menu_builder.class%
+        arguments:
+            -                           "@knp_menu.factory"
+            -                           "@service_container"
+
+    svd_core.seo.page:
+        class:                          %svd_core.seo_page.class%
+        arguments:
+            -                           "@sonata.seo.page"

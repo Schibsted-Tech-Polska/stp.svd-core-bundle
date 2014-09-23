@@ -1,0 +1,8 @@
+{% set _title = 'error.403.title'|trans({'%status_code%': status_code, '%status_text%': status_text }) %}
+{{ _title|striptags|raw }}
+{% for key in 1..(_title|striptags|raw|length) %}={% endfor %}
+
+
+{{ 'error.403.subtitle'|trans|striptags|raw }}
+
+{{ 'error.403.description'|trans|striptags|raw }}

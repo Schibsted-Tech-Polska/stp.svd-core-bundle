@@ -1,0 +1,6 @@
+default:
+    path:                               /
+    defaults:
+        _controller:                    SvdCoreBundle:Redirect:default
+    requirements:
+        _method:                        DELETE|GET|POST|PUT

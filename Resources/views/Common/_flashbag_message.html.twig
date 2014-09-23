@@ -1,0 +1,17 @@
+{% block flashbag_message %}
+    <div class="core-common-flashbag-message">
+        {% set _class = flashbag_message_class|default('alert') %}
+
+        {% for type, messages in app.session.flashbag.all %}
+            {% for message in messages %}
+                <div class="{{ _class }} {{ _class }}-{{ type }}">
+                    {% if type|slice(0, 4) == 'fos_' %}
+                        {{ message|trans({}, 'FOSUserBundle') }}
+                    {% else %}
+                        {{ message|trans }}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endblock %}
