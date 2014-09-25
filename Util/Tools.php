@@ -193,12 +193,13 @@ class Tools
      *
      * @param string $url          URL
      * @param int    $partsToLeave parts to leave
+     * @param array  $params       params
      *
      * @return string
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public static function leaveUrlParts($url, $partsToLeave)
+    public static function leaveUrlParts($url, $partsToLeave, array $params = array())
     {
         $parsedUrl = parse_url($url);
 
@@ -229,12 +230,26 @@ class Tools
         }
         $pass = $user || $pass ? $pass . '@' : '';
         if (($partsToLeave & self::URL_PATH) && isset($parsedUrl['path'])) {
-            $path = $parsedUrl['path'];
+            if (isset($params['cutFromUrlPath']) && !empty($params['cutFromUrlPath'])) {
+                $path = preg_replace($params['cutFromUrlPath'], '', $parsedUrl['path']);
+            } else {
+                $path = $parsedUrl['path'];
+            }
         } else {
             $path = '';
         }
         if (($partsToLeave & self::URL_QUERY) && isset($parsedUrl['query'])) {
-            $query = '?' . $parsedUrl['query'];
+            if (isset($params['allowedUrlParamNames']) && is_array($params['allowedUrlParamNames'])) {
+                parse_str($parsedUrl['query'], $queryParams);
+                foreach ($queryParams as $key => $value) {
+                    if (!in_array($key, $params['allowedUrlParamNames'])) {
+                        unset($queryParams[$key]);
+                    }
+                }
+                ksort($queryParams);
+                $parsedUrl['query'] = http_build_query($queryParams);
+            }
+            $query = !empty($parsedUrl['query']) ? '?' . $parsedUrl['query'] : '';
         } else {
             $query = '';
         }
@@ -254,12 +269,13 @@ class Tools
      *
      * @param string $url           URL
      * @param int    $partsToRemove parts to remove
+     * @param array  $params        params
      *
      * @return string
      */
-    public static function removeUrlParts($url, $partsToRemove)
+    public static function removeUrlParts($url, $partsToRemove, array $params = array())
     {
-        $ret = self::leaveUrlParts($url, ~$partsToRemove);
+        $ret = self::leaveUrlParts($url, ~$partsToRemove, $params);
 
         return $ret;
     }
