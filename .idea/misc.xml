@@ -5,14 +5,10 @@
       <BehatSettings />
     </behat_settings>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="5.5.0" />
   <component name="PhpUnit">
     <phpunit_settings>
       <PhpUnitSettings />
     </phpunit_settings>
-  </component>
-  <component name="ProjectDictionaryState">
-    <dictionary name="piotrkedra" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
