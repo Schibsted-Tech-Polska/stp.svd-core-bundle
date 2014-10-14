@@ -1,4 +1,5 @@
 parameters:
+    svd_core.cipher.mcrypt.class:       Svd\CoreBundle\Cipher\Mcrypt
     svd_core.controller.error.class:    Svd\CoreBundle\Controller\ErrorController
 
     svd_core.error.numbers:
@@ -10,21 +11,26 @@ parameters:
     svd_core.seo_page.class:            Svd\CoreBundle\Seo\SeoPage
 
 services:
+    svd_core.cipher.mcrypt:
+        arguments:
+            -                           %secret%
+        class:                          %svd_core.cipher.mcrypt.class%
+
     svd_core.controller.error:
-        class:                          %svd_core.controller.error.class%
         arguments:
             -                           "@twig"
             -                           %kernel.debug%
             -                           %svd_core.error.numbers%
             -                           "@svd_core.seo.page"
+        class:                          %svd_core.controller.error.class%
 
     svd_core.menu_builder:
-        class:                          %svd_core.menu_builder.class%
         arguments:
             -                           "@knp_menu.factory"
             -                           "@service_container"
+        class:                          %svd_core.menu_builder.class%
 
     svd_core.seo.page:
-        class:                          %svd_core.seo_page.class%
         arguments:
             -                           "@sonata.seo.page"
+        class:                          %svd_core.seo_page.class%
