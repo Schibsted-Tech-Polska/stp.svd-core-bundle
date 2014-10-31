@@ -39,7 +39,7 @@ services:
 
     svd_core.logger.helper:
         arguments:
-!            -                           @logger
+            -                           @logger
             -                           @session
             -                           %svd.log_dir_pattern%
             -                           %svd.monolog.format%
