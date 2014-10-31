@@ -1,20 +1,33 @@
 parameters:
     svd_core.cipher.mcrypt.class:       Svd\CoreBundle\Cipher\Mcrypt
     svd_core.controller.error.class:    Svd\CoreBundle\Controller\ErrorController
-
     svd_core.error.numbers:
         -                               403
         -                               404
-
     svd_core.menu_builder.class:        Svd\CoreBundle\Menu\MenuBuilder
-
     svd_core.seo_page.class:            Svd\CoreBundle\Seo\SeoPage
+    svd.command.lock.path:              /var/lock/cron/projectx/
+    svd.log_dir_pattern:                /var/log/%%service%%/projectx/%%filename%%
+    svd.monolog.format:                 "[%%datetime%%] [%%hash%%] [%%level_name%%:] %%message%% %%context%% %%extra%%\n"
+    svd.monolog.level:                  info
+
 
 services:
     svd_core.cipher.mcrypt:
         arguments:
             -                           %secret%
         class:                          %svd_core.cipher.mcrypt.class%
+
+    svd_core.cli.helper:
+        arguments:
+            -                           %svd.command.lock.path%
+            -                           @svd_core.logger.helper
+        class:                          Svd\CoreBundle\Helper\CliHelper
+    svd_core.console.formatter:
+        arguments:
+            -                           @session
+            -                           "[%%datetime%%] [%%hash%%]  %%level_name%%: %%start_tag%%%%message%%%%end_tag%% %%context%% %%extra%%\n"
+        class:                          Svd\CoreBundle\Formatter\ConsoleFormatter
 
     svd_core.controller.error:
         arguments:
@@ -23,6 +36,15 @@ services:
             -                           %svd_core.error.numbers%
             -                           "@svd_core.seo.page"
         class:                          %svd_core.controller.error.class%
+
+    svd_core.logger.helper:
+        arguments:
+!            -                           @logger
+            -                           @session
+            -                           %svd.log_dir_pattern%
+            -                           %svd.monolog.format%
+            -                           %svd.monolog.level%
+        class:                          Svd\CoreBundle\Manager\LoggerManager
 
     svd_core.menu_builder:
         arguments:
@@ -34,3 +56,11 @@ services:
         arguments:
             -                           "@sonata.seo.page"
         class:                          %svd_core.seo_page.class%
+
+    svd_core.twig.time_extension:
+        arguments:
+            -                           @service_container
+        class:                          Svd\CoreBundle\Twig\TimeExtension
+        tags:
+            -
+                name:                   twig.extension

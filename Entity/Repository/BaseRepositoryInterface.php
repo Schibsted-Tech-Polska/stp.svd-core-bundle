@@ -2,8 +2,8 @@
 
 namespace Svd\CoreBundle\Entity\Repository;
 
-use Svd\CoreBundle\Entity\EntityInterface as Entity;
 use Knp\Component\Pager\Paginator;
+use Svd\CoreBundle\Entity\EntityInterface as Entity;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
