@@ -279,4 +279,46 @@ class Tools
 
         return $ret;
     }
+
+    /**
+     * Get url parts ids
+     *
+     * @return array
+     */
+    public static function getUrlPartsIds()
+    {
+        $urlParts = [
+            self::URL_SCHEME,
+            self::URL_HOST,
+            self::URL_PORT,
+            self::URL_USER,
+            self::URL_PASS,
+            self::URL_PATH,
+            self::URL_QUERY,
+            self::URL_FRAGMENT,
+        ];
+
+        return $urlParts;
+    }
+
+    /**
+     * Get url parts labels
+     *
+     * @return array
+     */
+    public static function getUrlPartsLabels()
+    {
+        $urlParts = [
+            self::URL_SCHEME   => 'URL_PART_SCHEME',
+            self::URL_HOST     => 'URL_PART_HOST',
+            self::URL_PORT     => 'URL_PART_PORT',
+            self::URL_USER     => 'URL_PART_USER',
+            self::URL_PASS     => 'URL_PART_PASSWORD',
+            self::URL_PATH     => 'URL_PART_PATH',
+            self::URL_QUERY    => 'URL_PART_QUERY',
+            self::URL_FRAGMENT => 'URL_PART_FRAGMENT',
+        ];
+
+        return $urlParts;
+    }
 }
