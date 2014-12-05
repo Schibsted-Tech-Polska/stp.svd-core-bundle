@@ -5,7 +5,7 @@ namespace Svd\CoreBundle\Entity\Repository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 use Knp\Component\Pager\Paginator;
-use Svd\CoreBundle\Entity\EntityInterface as Entity;
+use Svd\CoreBundle\Entity\EntityInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -124,12 +124,12 @@ trait BaseRepositoryTrait
     /**
      * Insert
      *
-     * @param Entity $entity entity
-     * @param bool   $flush  flag, if flush should be done?
+     * @param EntityInterface $entity entity
+     * @param bool            $flush  flag, if flush should be done?
      *
      * @return self
      */
-    public function insert(Entity $entity, $flush = false)
+    public function insert(EntityInterface $entity, $flush = false)
     {
         return $this->save($entity, $flush);
     }
@@ -137,12 +137,12 @@ trait BaseRepositoryTrait
     /**
      * Update
      *
-     * @param Entity $entity entity
-     * @param bool   $flush  flag, if flush should be done?
+     * @param EntityInterface $entity entity
+     * @param bool            $flush  flag, if flush should be done?
      *
      * @return self
      */
-    public function update(Entity $entity, $flush = false)
+    public function update(EntityInterface $entity, $flush = false)
     {
         return $this->save($entity, $flush);
     }
@@ -150,12 +150,12 @@ trait BaseRepositoryTrait
     /**
      * Delete
      *
-     * @param Entity $entity entity
-     * @param bool   $flush  flag, if flush should be done?
+     * @param EntityInterface $entity entity
+     * @param bool            $flush  flag, if flush should be done?
      *
      * @return self
      */
-    public function delete(Entity $entity, $flush = false)
+    public function delete(EntityInterface $entity, $flush = false)
     {
         $this->getEntityManager()
             ->remove($entity);
@@ -171,12 +171,12 @@ trait BaseRepositoryTrait
     /**
      * Save
      *
-     * @param Entity $entity entity
-     * @param bool   $flush  flag, if flush should be done?
+     * @param EntityInterface $entity entity
+     * @param bool            $flush  flag, if flush should be done?
      *
      * @return self
      */
-    protected function save(Entity $entity, $flush = false)
+    protected function save(EntityInterface $entity, $flush = false)
     {
         $this->getEntityManager()
             ->persist($entity);

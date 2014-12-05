@@ -3,7 +3,7 @@
 namespace Svd\CoreBundle\Entity\Repository;
 
 use Knp\Component\Pager\Paginator;
-use Svd\CoreBundle\Entity\EntityInterface as Entity;
+use Svd\CoreBundle\Entity\EntityInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -63,30 +63,30 @@ interface BaseRepositoryInterface
     /**
      * Insert
      *
-     * @param Entity $entity entity
-     * @param bool   $flush  flag, if flush should be done?
+     * @param EntityInterface $entity entity
+     * @param bool            $flush  flag, if flush should be done?
      *
      * @return self
      */
-    public function insert(Entity $entity, $flush = false);
+    public function insert(EntityInterface $entity, $flush = false);
 
     /**
      * Update
      *
-     * @param Entity $entity entity
-     * @param bool   $flush  flag, if flush should be done?
+     * @param EntityInterface $entity entity
+     * @param bool            $flush  flag, if flush should be done?
      *
      * @return self
      */
-    public function update(Entity $entity, $flush = false);
+    public function update(EntityInterface $entity, $flush = false);
 
     /**
      * Delete
      *
-     * @param Entity $entity entity
-     * @param bool   $flush  flag, if flush should be done?
+     * @param EntityInterface $entity entity
+     * @param bool            $flush  flag, if flush should be done?
      *
      * @return self
      */
-    public function delete(Entity $entity, $flush = false);
+    public function delete(EntityInterface $entity, $flush = false);
 }
