@@ -6,15 +6,15 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 use Knp\Component\Pager\Paginator;
 use Svd\CoreBundle\Entity\EntityInterface as Entity;
-use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Base repository trait
  */
 trait BaseRepositoryTrait
 {
-    /** @var Translator */
+    /** @var TranslatorInterface */
     protected $translator;
 
     /** @var Paginator */
@@ -23,9 +23,9 @@ trait BaseRepositoryTrait
     /**
      * Set translator
      *
-     * @param Translator $translator translator
+     * @param TranslatorInterface $translator translator
      */
-    public function setTranslator(Translator $translator)
+    public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }

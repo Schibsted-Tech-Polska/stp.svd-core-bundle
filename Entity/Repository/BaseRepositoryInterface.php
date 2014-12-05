@@ -4,8 +4,8 @@ namespace Svd\CoreBundle\Entity\Repository;
 
 use Knp\Component\Pager\Paginator;
 use Svd\CoreBundle\Entity\EntityInterface as Entity;
-use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Entity repository
@@ -15,9 +15,9 @@ interface BaseRepositoryInterface
     /**
      * Set translator
      *
-     * @param Translator $translator translator
+     * @param TranslatorInterface $translator translator
      */
-    public function setTranslator(Translator $translator);
+    public function setTranslator(TranslatorInterface $translator);
 
     /**
      * Set paginator
