@@ -159,7 +159,7 @@ abstract class BaseCommand extends ContainerAwareCommand
     protected function createLogger()
     {
         $logService = $this->getContainer()
-            ->getParameter('svd.log_dir.service.command');
+            ->getParameter('svd_core.log_dir.service.command');
 
         $this->cliHelper
             ->getLoggerManager()
