@@ -10,16 +10,6 @@ use DateTime;
 trait BaseEntityTrait
 {
     /**
-     * @var DateTime
-     */
-    protected $createdAt;
-
-    /**
-     * @var DateTime
-     */
-    protected $updatedAt;
-
-    /**
      * Set created at
      *
      * @param DateTime $createdAt created at
@@ -28,6 +18,7 @@ trait BaseEntityTrait
      */
     public function setCreatedAt(DateTime $createdAt)
     {
+        /** @noinspection PhpUndefinedFieldInspection */
         $this->createdAt = $createdAt;
 
         return $this;
@@ -40,6 +31,7 @@ trait BaseEntityTrait
      */
     public function getCreatedAt()
     {
+        /** @noinspection PhpUndefinedFieldInspection */
         return $this->createdAt;
     }
 
@@ -52,6 +44,7 @@ trait BaseEntityTrait
      */
     public function setUpdatedAt(DateTime $updatedAt)
     {
+        /** @noinspection PhpUndefinedFieldInspection */
         $this->updatedAt = $updatedAt;
 
         return $this;
@@ -64,6 +57,7 @@ trait BaseEntityTrait
      */
     public function getUpdatedAt()
     {
+        /** @noinspection PhpUndefinedFieldInspection */
         return $this->updatedAt;
     }
 }
