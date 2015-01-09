@@ -1,11 +1,11 @@
 company.slogan:                         Slogan...
 
-error.403.description:                  Försök igen eller gå tillbaka till <a href="/">home page</a>.
+error.403.description:                  Försök igen eller gå tillbaka till <a href="/">startsidan</a>.
 error.403.subtitle:                     Du har inte behörighet att visa denna sida.
-error.403.title:                        Oj, ett fel har inträffat "%status_code% %status_text%".
-error.404.description:                  Försök igen eller gå tillbaka till <a href="/">home page</a>.
+error.403.title:                        Oj, ett fel har inträffat: "%status_code% %status_text%"
+error.404.description:                  Försök igen eller gå tillbaka till <a href="/">startsidan</a>.
 error.404.subtitle:                     Du har inte behörighet att visa denna sida.
-error.404.title:                        Oj, ett fel har inträffat "%status_code% %status_text%".
+error.404.title:                        Oj, ett fel har inträffat: "%status_code% %status_text%"
 
 locale.en:                              engelska
 locale.sv:                              svenska
