@@ -2,6 +2,7 @@
 
 namespace Svd\CoreBundle\Entity\Repository;
 
+use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 use Knp\Component\Pager\Paginator;
@@ -184,6 +185,56 @@ trait BaseRepositoryTrait
         if ($flush) {
             $this->getEntityManager()
                 ->flush();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get IN clause SQL (to support SQL's "IN()" clause inside prepaired statements in simpliest way)
+     *
+     * @param string $variableName variable name
+     * @param array  $values       values
+     * @param string $clause       clause
+     *
+     * @return string
+     */
+    protected function getInClauseSql($variableName, array $values, $clause)
+    {
+        $ret = '';
+        $count = count($values);
+
+        if ($count > 0) {
+            $arrayVariables = [];
+            for ($i = 1; $i <= $count; $i++) {
+                $arrayVariables[] = $variableName . $i;
+            }
+            $ret = implode(',', $arrayVariables);
+
+            if (!empty($clause)) {
+                $ret = sprintf($clause, $ret);
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Bind array values (to support SQL's "IN()" clause inside prepaired statements in simpliest way)
+     *
+     * @param Statement    $statement    statement
+     * @param string       $variableName variable name
+     * @param array        $values       values
+     * @param integer|null $type         type
+     *
+     * @return self
+     */
+    protected function bindArrayValues(Statement $statement, $variableName, array $values, $type = null)
+    {
+        $i = 1;
+        foreach ($values as $value) {
+            $statement->bindValue($variableName . $i, $value, $type);
+            $i++;
         }
 
         return $this;
