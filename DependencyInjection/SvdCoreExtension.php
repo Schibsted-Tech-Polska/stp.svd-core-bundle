@@ -29,7 +29,5 @@ class SvdCoreExtension extends Extension
         $container->setParameter('svd_core.locales', $config['locales']);
         $container->setParameter('svd_core.urls.admin_index', $config['urls']['admin_index']);
         $container->setParameter('svd_core.urls.homepage', $config['urls']['homepage']);
-        $container->setParameter('svd_core.parameters.creation_year', $config['parameters']['creation_year']);
-        $container->setParameter('svd_core.parameters.company_name', $config['parameters']['company_name']);
     }
 }

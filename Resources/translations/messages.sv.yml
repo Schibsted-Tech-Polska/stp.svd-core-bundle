@@ -1,5 +1,3 @@
-company.slogan:                         Slogan...
-
 error.403.description:                  Försök igen eller gå tillbaka till <a href="/">startsidan</a>.
 error.403.subtitle:                     Du har inte behörighet att visa denna sida.
 error.403.title:                        Oj, ett fel har inträffat: "%status_code% %status_text%"

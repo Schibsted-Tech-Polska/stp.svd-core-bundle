@@ -6,10 +6,10 @@ parameters:
         -                               404
     svd_core.menu_builder.class:        Svd\CoreBundle\Menu\MenuBuilder
     svd_core.seo_page.class:            Svd\CoreBundle\Seo\SeoPage
-    svd.command.lock.path:              /var/lock/cron/projectx/
-    svd.log_dir_pattern:                /var/log/%%service%%/projectx/%%filename%%
-    svd.monolog.format:                 "[%%datetime%%] [%%hash%%] [%%level_name%%:] %%message%% %%context%% %%extra%%\n"
-    svd.monolog.level:                  info
+    svd_core.command.lock_path:         /var/lock/cron/projectx/
+    svd_core.log_dir.pattern:           /var/log/%%service%%/projectx/%%filename%%
+    svd_core.monolog.format:            "[%%datetime%%] [%%hash%%] [%%level_name%%:] %%message%% %%context%% %%extra%%\n"
+    svd_core.monolog.level:             info
 
 
 services:
@@ -20,7 +20,7 @@ services:
 
     svd_core.cli.helper:
         arguments:
-            -                           %svd.command.lock.path%
+            -                           %svd_core.command.lock_path%
             -                           @svd_core.logger.helper
         class:                          Svd\CoreBundle\Helper\CliHelper
     svd_core.console.formatter:
@@ -41,9 +41,9 @@ services:
         arguments:
             -                           @logger
             -                           @session
-            -                           %svd.log_dir_pattern%
-            -                           %svd.monolog.format%
-            -                           %svd.monolog.level%
+            -                           %svd_core.log_dir.pattern%
+            -                           %svd_core.monolog.format%
+            -                           %svd_core.monolog.level%
         class:                          Svd\CoreBundle\Manager\LoggerManager
 
     svd_core.menu_builder:

@@ -17,15 +17,6 @@ class CommonController extends Controller
      */
     public function footerAction()
     {
-        $currentYear = date('Y');
-        $creationYear = $this->container->getParameter('svd_core.parameters.creation_year');
-
-        $date = ($currentYear > $creationYear ? $creationYear . ' - ' . $currentYear : $creationYear);
-        $companyName = $this->container->getParameter('svd_core.parameters.company_name');
-
-        return $this->render('SvdCoreBundle:Common:_footer.html.twig', array(
-            'date' => $date,
-            'companyName' => $companyName,
-        ));
+        return $this->render('SvdCoreBundle:Common:_footer.html.twig', array());
     }
 }
