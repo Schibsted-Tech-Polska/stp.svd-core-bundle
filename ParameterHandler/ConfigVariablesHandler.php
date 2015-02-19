@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Svd\CoreBundle\ParameterHandler;
+namespace Svd\CoreBundle\ParameterHandler;
 
 use Composer\Script\Event;
 
