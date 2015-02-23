@@ -3,6 +3,8 @@
 namespace Svd\CoreBundle\Util;
 
 use Doctrine\Common\Util\Debug;
+use finfo;
+use Svd\CoreBundle\MimeType\MimeTypeMatcher;
 
 /**
  * Util
@@ -131,6 +133,32 @@ class Tools
         return $document;
     }
 
+    /**
+     * Get content type
+     *
+     * @param string  $url           URL
+     * @param boolean $checkRealType check real type
+     *
+     * @return string|null
+     */
+    protected function getContentType($url, $checkRealType = false)
+    {
+        if ($checkRealType) {
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $type = $finfo->buffer(file_get_contents($url));
+        } else {
+            $mimeTypes = array_flip((new MimeTypeMatcher())->getMatches());
+            $mimeTypes['jpg'] = 'image/jpeg';
+
+            $urlParts = explode('?', $url);
+            $url = $urlParts[0];
+
+            $extension = strtolower(pathinfo($url, PATHINFO_EXTENSION));
+            $type = array_key_exists($extension, $mimeTypes) ? $mimeTypes[$extension] : null;
+        }
+
+        return $type;
+    }
 
     /**
      * Fetch response /extended/
