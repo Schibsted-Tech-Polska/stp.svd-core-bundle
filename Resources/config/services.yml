@@ -8,7 +8,6 @@ parameters:
     svd_core.seo_page.class:            Svd\CoreBundle\Seo\SeoPage
     svd_core.command.lock_path:         /var/lock/cron/projectx/
     svd_core.log_dir.pattern:           /var/log/%%service%%/projectx/%%filename%%
-    svd_core.manager.content_service:   svd_core.manager.content_real
     svd_core.monolog.format:            "[%%datetime%%] [%%hash%%] [%%level_name%%:] %%message%% %%context%% %%extra%%\n"
     svd_core.monolog.level:             info
 
