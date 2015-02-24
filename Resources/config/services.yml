@@ -8,6 +8,7 @@ parameters:
     svd_core.seo_page.class:            Svd\CoreBundle\Seo\SeoPage
     svd_core.command.lock_path:         /var/lock/cron/projectx/
     svd_core.log_dir.pattern:           /var/log/%%service%%/projectx/%%filename%%
+    svd_core.manager.content_service:   svd_core.manager.content_real
     svd_core.monolog.format:            "[%%datetime%%] [%%hash%%] [%%level_name%%:] %%message%% %%context%% %%extra%%\n"
     svd_core.monolog.level:             info
 
@@ -23,6 +24,7 @@ services:
             -                           %svd_core.command.lock_path%
             -                           @svd_core.logger.helper
         class:                          Svd\CoreBundle\Helper\CliHelper
+
     svd_core.console.formatter:
         arguments:
             -                           @session
@@ -45,6 +47,14 @@ services:
             -                           %svd_core.monolog.format%
             -                           %svd_core.monolog.level%
         class:                          Svd\CoreBundle\Manager\LoggerManager
+
+    svd_core.manager.content_real:
+        class:                          Svd\CoreBundle\Manager\ContentManager
+
+    svd_core.manager.content_test:
+        arguments:
+            -                           %kernel.root_dir%/fixtures/%%filename%%
+        class:                          Svd\CoreBundle\Manager\ContentFileManager
 
     svd_core.menu_builder:
         arguments:

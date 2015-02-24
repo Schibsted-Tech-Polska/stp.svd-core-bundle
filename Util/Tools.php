@@ -4,6 +4,7 @@ namespace Svd\CoreBundle\Util;
 
 use Doctrine\Common\Util\Debug;
 use finfo;
+use Svd\CoreBundle\Manager\ContentManager;
 use Svd\CoreBundle\MimeType\MimeTypeMatcher;
 
 /**
@@ -170,26 +171,9 @@ class Tools
      */
     public static function fetchResponseExtended($url, array $options = array())
     {
-        // @README: marge array preserving keys
-        $options = $options + array(
-            CURLOPT_CONNECTTIMEOUT => 30,
-            CURLOPT_FOLLOWLOCATION => 1,
-            CURLOPT_HEADER => 0,
-            CURLOPT_MAXREDIRS => 5,
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_TIMEOUT => 30,
-        );
-        $response = array();
+        $manager = new ContentManager();
 
-        $ch = curl_init($url);
-        curl_setopt_array($ch, $options);
-        $response['content'] = curl_exec($ch);
-        $response['effectiveUrl'] = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-        $response['errorMessage'] = curl_error($ch);
-        $response['errorNumber'] = curl_errno($ch);
-        $response['httpCode'] = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $response['redirectCount'] = curl_getinfo($ch, CURLINFO_REDIRECT_COUNT);
-        curl_close($ch);
+        $response = $manager->fetchResponseExtended($url, $options);
 
         return $response;
     }
@@ -206,14 +190,11 @@ class Tools
      */
     public static function fetchResponse($url, array $options = array())
     {
-        $response = self::fetchResponseExtended($url, $options);
+        $manager = new ContentManager();
 
-        if (($response['httpCode'] == 200) && ($response['errorNumber'] == 0)) {
-            return $response['content'];
-        } else {
-            throw new \RuntimeException(sprintf("Can't fetch response from url: %s, httpCode: %d, errorNumber: %d",
-                $url, $response['httpCode'], $response['errorNumber']));
-        }
+        $response = $manager->fetchResponse($url, $options);
+
+        return $response;
     }
 
     /**
