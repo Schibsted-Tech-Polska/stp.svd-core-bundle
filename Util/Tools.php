@@ -137,16 +137,21 @@ class Tools
     /**
      * Get content type
      *
-     * @param string  $url           URL
-     * @param boolean $checkRealType check real type
+     * @param string  $url                URL
+     * @param string  $defaultContentType default content type
+     * @param boolean $checkRealType      check real type
      *
-     * @return string|null
+     * @return string
      */
-    protected function getContentType($url, $checkRealType = false)
+    public static function getContentType($url, $defaultContentType = '', $checkRealType = false)
     {
         if ($checkRealType) {
             $finfo = new finfo(FILEINFO_MIME_TYPE);
             $type = $finfo->buffer(file_get_contents($url));
+
+            if (empty($type)) {
+                $type = $defaultContentType;
+            }
         } else {
             $mimeTypes = array_flip((new MimeTypeMatcher())->getMatches());
             $mimeTypes['jpg'] = 'image/jpeg';
@@ -155,7 +160,7 @@ class Tools
             $url = $urlParts[0];
 
             $extension = strtolower(pathinfo($url, PATHINFO_EXTENSION));
-            $type = array_key_exists($extension, $mimeTypes) ? $mimeTypes[$extension] : null;
+            $type = array_key_exists($extension, $mimeTypes) ? $mimeTypes[$extension] : $defaultContentType;
         }
 
         return $type;
