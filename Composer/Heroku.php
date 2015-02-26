@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Svd\CoreBundle\Composer;
+namespace Svd\CoreBundle\Composer;
 
 use Composer\Script\Event;
 
