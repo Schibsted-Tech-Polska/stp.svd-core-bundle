@@ -64,7 +64,7 @@ interface BaseRepositoryInterface
      * Insert
      *
      * @param DocumentInterface $document document
-     * @param bool              $flush  flag, if flush should be done?
+     * @param bool              $flush    flag, if flush should be done?
      *
      * @return self
      */
@@ -74,7 +74,7 @@ interface BaseRepositoryInterface
      * Update
      *
      * @param DocumentInterface $document document
-     * @param bool              $flush  flag, if flush should be done?
+     * @param bool              $flush    flag, if flush should be done?
      *
      * @return self
      */
@@ -84,7 +84,7 @@ interface BaseRepositoryInterface
      * Delete
      *
      * @param DocumentInterface $document document
-     * @param bool              $flush  flag, if flush should be done?
+     * @param bool              $flush    flag, if flush should be done?
      *
      * @return self
      */
