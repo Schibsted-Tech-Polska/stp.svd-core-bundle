@@ -42,24 +42,24 @@ trait BaseRepositoryTrait
     /**
      * Finds a single document by a set of criteria
      *
-     * @param array      $criteria criteria
-     * @param array|null $orderBy  sort criteria
+     * @param array $criteria criteria
      *
      * @return object|null
      */
-    abstract public function findOneBy(array $criteria, array $orderBy = null);
+    abstract public function findOneBy(array $criteria);
 
     /**
      * Get one with full data
      *
      * @param array      $criteria criteria
-     * @param array|null $orderBy  sort criteria
+     * @param array|null $sort     sort criteria
      *
      * @return object|null
      */
-    public function getOneBy(array $criteria, array $orderBy = null)
+    public function getOneBy(array $criteria, array $sort = null)
     {
-        $result = $this->findOneBy($criteria, $orderBy);
+        $results = $this->findBy($criteria, $sort, 1);
+        $result = array_shift($results);
 
         return $result;
     }
@@ -68,15 +68,15 @@ trait BaseRepositoryTrait
      * Get one with full data or throw error 404
      *
      * @param array      $criteria criteria
-     * @param array|null $orderBy  sort criteria
+     * @param array|null $sort     sort criteria
      *
      * @return object
      *
      * @throws NotFoundHttpException
      */
-    public function getOneByOr404(array $criteria, array $orderBy = null)
+    public function getOneByOr404(array $criteria, array $sort = null)
     {
-        $result = $this->getOneBy($criteria, $orderBy);
+        $result = $this->getOneBy($criteria, $sort);
         if (!$result) {
             throw new NotFoundHttpException();
         }
@@ -87,28 +87,28 @@ trait BaseRepositoryTrait
     /**
      * Finds documents by a set of criteria
      *
-     * @param array      $criteria criteria
-     * @param array|null $orderBy  sort criteria
-     * @param int        $limit    limit
-     * @param int        $offset   offset
+     * @param array        $criteria criteria
+     * @param array|null   $sort     sort criteria
+     * @param integer|null $limit    limit
+     * @param integer|null $skip     skip
      *
      * @return array
      */
-    abstract public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null);
+    abstract public function findBy(array $criteria, array $sort = null, $limit = null, $skip = null);
 
     /**
      * Get all with full data
      *
-     * @param array      $criteria criteria
-     * @param array|null $orderBy  sort criteria
-     * @param int        $limit    limit
-     * @param int        $offset   offset
+     * @param array        $criteria criteria
+     * @param array|null   $sort     sort criteria
+     * @param integer|null $limit    limit
+     * @param integer|null $skip     skip
      *
      * @return array
      */
-    public function getBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    public function getBy(array $criteria, array $sort = null, $limit = null, $skip = null)
     {
-        $result = $this->findBy($criteria, $orderBy, $limit, $offset);
+        $result = $this->findBy($criteria, $sort, $limit, $skip);
 
         return $result;
     }

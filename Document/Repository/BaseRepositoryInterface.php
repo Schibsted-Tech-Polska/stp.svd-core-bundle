@@ -30,35 +30,35 @@ interface BaseRepositoryInterface
      * Get one with full data
      *
      * @param array      $criteria criteria
-     * @param array|null $orderBy  sort criteria
+     * @param array|null $sort     sort criteria
      *
      * @return self|null
      */
-    public function getOneBy(array $criteria, array $orderBy = null);
+    public function getOneBy(array $criteria, array $sort = null);
 
     /**
      * Get one with full data or throw error 404
      *
      * @param array      $criteria criteria
-     * @param array|null $orderBy  sort criteria
+     * @param array|null $sort     sort criteria
      *
      * @return self
      *
      * @throws NotFoundHttpException
      */
-    public function getOneByOr404(array $criteria, array $orderBy = null);
+    public function getOneByOr404(array $criteria, array $sort = null);
 
     /**
      * Get all with full data
      *
-     * @param array      $criteria criteria
-     * @param array|null $orderBy  sort criteria
-     * @param int        $limit    limit
-     * @param int        $offset   offset
+     * @param array        $criteria criteria
+     * @param array|null   $sort     sort criteria
+     * @param integer|null $limit    limit
+     * @param integer|null $skip     skip
      *
      * @return array
      */
-    public function getBy(array $criteria, array $orderBy = null, $limit = null, $offset = null);
+    public function getBy(array $criteria, array $sort = null, $limit = null, $skip = null);
 
     /**
      * Insert
