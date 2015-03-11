@@ -335,4 +335,23 @@ class Tools
 
         return $urlParts;
     }
+
+    /**
+     * Replace pattern
+     *
+     * @param string $pattern pattern
+     * @param array  $values  values
+     *
+     * @return string
+     */
+    public static function replacePattern($pattern, array $values)
+    {
+        preg_match_all('#%([a-zA-Z0-9\_\-]+)%#', $pattern, $matches);
+        $string = $pattern;
+        foreach ($matches[1] as $var) {
+            $string = str_replace('%' . $var . '%', isset($values[$var]) ? $values[$var] : '', $string);
+        }
+
+        return $string;
+    }
 }
