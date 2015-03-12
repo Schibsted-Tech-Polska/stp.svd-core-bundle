@@ -7,7 +7,7 @@ use Composer\Script\Event;
 /**
  * Composer
  */
-class Heroku
+class Parameters
 {
     /**
      * Parse DATABASE_URL
@@ -16,7 +16,7 @@ class Heroku
      */
     public static function parseDatabaseUrl(Event $event)
     {
-        self::parseDatabaseParameters($event, 'DATABASE_URL', 'DOCTRINE', [
+        self::parseDatabaseParameters($event, 'DATABASE_URL', 'DOCTRINE__', [
             'host',
             'pass',
             'path',
@@ -32,7 +32,7 @@ class Heroku
      */
     public static function parseMongolabUri(Event $event)
     {
-        self::parseDatabaseParameters($event, 'MONGOLAB_URI', 'DOCTRINE_MONGODB', [
+        self::parseDatabaseParameters($event, 'MONGOLAB_URI', 'DOCTRINE_MONGODB__', [
             'host',
             'pass',
             'path',
