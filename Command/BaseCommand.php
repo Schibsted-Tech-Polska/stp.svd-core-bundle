@@ -123,12 +123,8 @@ abstract class BaseCommand extends ContainerAwareCommand
 
         $this->validate();
 
-        $this->entityManager = $this->getContainer()
-            ->get('doctrine')
-            ->getManager();
-        $this->entityManager->getConnection()
-            ->getConfiguration()
-            ->setSQLLogger(null);
+        $this->setEntityManager();
+        $this->disableLogging();
 
         $this->beginTransaction();
         try {
@@ -239,6 +235,30 @@ abstract class BaseCommand extends ContainerAwareCommand
         }
 
         $this->logger->log($level, $message, $context);
+    }
+
+    /**
+     * Set entity manager
+     */
+    protected function setEntityManager()
+    {
+        if ($this->getContainer()->has('doctrine')) {
+            $this->entityManager = $this->getContainer()
+                ->get('doctrine')
+                ->getManager();
+        }
+    }
+
+    /**
+     * Disable logging
+     */
+    protected function disableLogging()
+    {
+        if ($this->getContainer()->has('doctrine')) {
+            $this->entityManager->getConnection()
+                ->getConfiguration()
+                ->setSQLLogger(null);
+        }
     }
 
     /**
