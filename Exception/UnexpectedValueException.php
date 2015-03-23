@@ -2,11 +2,11 @@
 
 namespace Svd\CoreBundle\Exception;
 
-use UnexpectedValueException as BaseUnexpectedValueException;
+use UnexpectedValueException as BaseException;
 
 /**
  * Exception
  */
-class UnexpectedValueException extends BaseUnexpectedValueException implements ExceptionInterface
+class UnexpectedValueException extends BaseException implements ExceptionInterface
 {
 }

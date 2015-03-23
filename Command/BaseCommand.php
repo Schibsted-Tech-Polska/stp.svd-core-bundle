@@ -4,6 +4,7 @@ namespace Svd\CoreBundle\Command;
 
 use Doctrine\ORM\EntityManager;
 use Exception;
+use Svd\CoreBundle\Exception\NotAllowedParameterException;
 use Svd\CoreBundle\Helper\CliHelper;
 use Svd\CoreBundle\Util\Tools;
 use Symfony\Bridge\Monolog\Logger;
@@ -110,9 +111,6 @@ abstract class BaseCommand extends ContainerAwareCommand
             ->get('svd_core.cli.helper');
 
         $this->logger = $this->createLogger();
-        $this->entityManager = $this->getContainer()
-            ->get('doctrine')
-            ->getManager();
 
         $this->registerShutdownFunctions();
         $this->cliHelper->setFilename(str_replace(':', '_', $this->getName()) . '.lock');
@@ -125,6 +123,9 @@ abstract class BaseCommand extends ContainerAwareCommand
 
         $this->validate();
 
+        $this->entityManager = $this->getContainer()
+            ->get('doctrine')
+            ->getManager();
         $this->entityManager->getConnection()
             ->getConfiguration()
             ->setSQLLogger(null);
@@ -247,6 +248,10 @@ abstract class BaseCommand extends ContainerAwareCommand
     {
         $this->input->setOption('dry-run', (bool) $this->input->getOption('dry-run'));
         $this->input->setOption('transaction', (bool) $this->input->getOption('transaction'));
+
+        if (($this->input->getOption('transaction')) && (!$this->getContainer()->has('doctrine'))) {
+            throw new NotAllowedParameterException("Can't use transaction when EntityManager is not available.");
+        }
     }
 
     /**
