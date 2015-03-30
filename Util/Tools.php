@@ -349,7 +349,16 @@ class Tools
         preg_match_all('#%([a-zA-Z0-9\_\-]+)%#', $pattern, $matches);
         $string = $pattern;
         foreach ($matches[1] as $var) {
-            $string = str_replace('%' . $var . '%', isset($values[$var]) ? $values[$var] : '', $string);
+            if (is_array($values[$var])) {
+                $retValues = [];
+                foreach ($values[$var] as $value) {
+                    $retValues[] = $value['value'];
+                }
+                $replacement = implode(', ', $retValues);
+            } else {
+                $replacement = isset($values[$var]) ? $values[$var] : '';
+            }
+            $string = str_replace('%' . $var . '%', $replacement, $string);
         }
 
         return $string;
