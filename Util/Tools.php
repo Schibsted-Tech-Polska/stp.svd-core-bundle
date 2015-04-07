@@ -6,6 +6,8 @@ use Doctrine\Common\Util\Debug;
 use finfo;
 use Svd\CoreBundle\Manager\ContentManager;
 use Svd\CoreBundle\MimeType\MimeTypeMatcher;
+use \Twig_Environment;
+use \Twig_Loader_String;
 
 /**
  * Util
@@ -346,20 +348,8 @@ class Tools
      */
     public static function replacePattern($pattern, array $values)
     {
-        preg_match_all('#%([a-zA-Z0-9\_\-]+)%#', $pattern, $matches);
-        $string = $pattern;
-        foreach ($matches[1] as $var) {
-            if (isset($values[$var]) && is_array($values[$var])) {
-                $retValues = [];
-                foreach ($values[$var] as $value) {
-                    $retValues[] = $value['value'];
-                }
-                $replacement = implode(', ', $retValues);
-            } else {
-                $replacement = isset($values[$var]) ? $values[$var] : '';
-            }
-            $string = str_replace('%' . $var . '%', $replacement, $string);
-        }
+        $twig = new Twig_Environment(new Twig_Loader_String());
+        $string = $twig->render($pattern, $values);
 
         return $string;
     }
