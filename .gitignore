@@ -13,5 +13,36 @@ _darcs
 Thumbs.db
 
 
+PHPSpec
+/coverage/*
+coverage.xml
+
+# PHPUnit
+/report/*
+
+# Vagrant
+/vagrant/.vagrant
+
+
 # Symfony
-/composer.lock
+/app/bootstrap.php.cache
+/app/cache/*
+/app/config/credencials.yml
+/app/config/parameters.yml
+/app/logs/*
+/app/sessions/*
+/public_html/assetic/*
+/public_html/bundles/*
+/vendor/*
+
+# Common project
+/public_html/css/x-default.min.css
+/public_html/css/x-admin.min.css
+/public_html/js/x-default.min.js
+/public_html/js/x-admin.min.js
+
+# Current project
+/public_html/css/api/*
+/public_html/download/*
+/public_html/images/api/*
+/public_html/js/api/*
