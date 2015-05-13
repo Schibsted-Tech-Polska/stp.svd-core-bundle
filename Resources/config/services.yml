@@ -8,7 +8,7 @@ parameters:
     svd_core.fixtures.file_path:        %kernel.root_dir%/fixtures/%%filename%%.txt
     svd_core.log_dir.pattern:           /var/log/%%service%%/projectx/%%filename%%
     svd_core.menu_builder.class:        Svd\CoreBundle\Menu\MenuBuilder
-    svd_core.monolog.format:            "[%%datetime%%] [%%hash%%] [%%level_name%%:] %%message%% %%context%% %%extra%%\n"
+    svd_core.monolog.format:            "[%%datetime%%] [%%hash%%]  %%level_name%%: %%start_tag%%%%message%%%%end_tag%% %%context%% %%extra%%\n"
     svd_core.monolog.level:             info
     svd_core.seo_page.class:            Svd\CoreBundle\Seo\SeoPage
 
@@ -27,7 +27,7 @@ services:
     svd_core.console.formatter:
         arguments:
             -                           @session
-            -                           "[%%datetime%%] [%%hash%%]  %%level_name%%: %%start_tag%%%%message%%%%end_tag%% %%context%% %%extra%%\n"
+            -                           %svd_core.monolog.format%
         class:                          Svd\CoreBundle\Formatter\ConsoleFormatter
 
     svd_core.controller.error:
