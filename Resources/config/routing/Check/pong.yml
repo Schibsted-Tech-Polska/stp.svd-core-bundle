@@ -1,6 +1,5 @@
 pong:
-    path:                               /pong
     defaults:
         _controller:                    SvdCoreBundle:Check:pong
-    requirements:
-        _method:                        DELETE|GET|POST|PUT
+    methods:                            [DELETE, GET, POST, PUT]
+    path:                               /pong

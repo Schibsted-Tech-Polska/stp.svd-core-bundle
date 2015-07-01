@@ -1,6 +1,5 @@
 admin:
-    path:                               /admin
     defaults:
         _controller:                    SvdCoreBundle:Redirect:admin
-    requirements:
-        _method:                        DELETE|GET|POST|PUT
+    methods:                            [DELETE, GET, POST, PUT]
+    path:                               /admin
