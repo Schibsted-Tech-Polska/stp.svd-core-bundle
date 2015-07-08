@@ -58,7 +58,7 @@ class Parameters
     }
 
     /**
-     * Parse ...
+     * Parse CLOUDAMQP_URL
      *
      * @param Event  $event  event
      * @param string $envVar env variable
