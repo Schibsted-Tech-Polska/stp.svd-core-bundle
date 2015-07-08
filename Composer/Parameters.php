@@ -49,7 +49,7 @@ class Parameters
      */
     public static function parseCleardbUrl(Event $event)
     {
-        self::parseParameters($event, 'CLEARDB_DATABASE_URL', 'DOCTRINE__DATABASE_', [
+        self::parseUrlParameters($event, 'CLEARDB_DATABASE_URL', 'DOCTRINE__DATABASE_', [
             'host' => 'HOST',
             'pass' => 'PASSWORD',
             'path' => 'DBNAME ',
