@@ -42,6 +42,38 @@ class Parameters
     }
 
     /**
+     * Parse CLEARDB_DATABASE_URL
+     *
+     * @param Event  $event  event
+     * @param string $envVar env variable
+     */
+    public static function parseCleardbUrl(Event $event)
+    {
+        self::parseParameters($event, 'CLEARDB_DATABASE_URL', 'DOCTRINE__DATABASE_', [
+            'host' => 'HOST',
+            'pass' => 'PASSWORD',
+            'path' => 'DBNAME ',
+            'user' => 'USER',
+        ]);
+    }
+
+    /**
+     * Parse ...
+     *
+     * @param Event  $event  event
+     * @param string $envVar env variable
+     */
+    public static function parseCloudAmqUrl(Event $event)
+    {
+        self::parseUrlParameters($event, 'CLOUDAMQP_URL', 'OLD_SOUND_RABBIT_MQ__', [
+            'host' => 'HOST',
+            'pass' => 'PASSWORD',
+            'path' => 'VHOST',
+            'user' => 'USER'
+        ]);
+    }
+
+    /**
      * Parse database parameters
      *
      * @param Event  $event           event
@@ -69,6 +101,35 @@ class Parameters
                 }
                 if (in_array('user', $usedFields)) {
                     putenv($destParamPrefix . 'DATABASE_USER=' . $items['user']);
+                }
+
+                $io = $event->getIO();
+                $io->write("Parameters from '" . $srcParam . "' variable have been updated.");
+            }
+        }
+    }
+
+    /**
+     * Parse database parameters
+     *
+     * @param Event  $event           event
+     * @param string $srcParam        src parameter, e.g.: DATABASE_URL
+     * @param string $destParamPrefix dest parameter prefix, e.g.: DOCTRINE
+     * @param array  $usedFields      used fields, e.g.: ['user', 'pass']
+     */
+    protected static function parseUrlParameters(Event $event, $srcParam, $destParamPrefix, array $usedFields)
+    {
+        $databaseParameters = getenv($srcParam);
+        if (!empty($databaseParameters)) {
+            $items = parse_url($databaseParameters);
+            if (!empty($items)) {
+                foreach ($usedFields as $key => $envName) {
+                    if ($key == 'path') {
+                        $value = substr($items[$key], 1);
+                    } else {
+                        $value = $items[$key];
+                    }
+                    putenv($destParamPrefix . $envName . '=' . $value);
                 }
 
                 $io = $event->getIO();
