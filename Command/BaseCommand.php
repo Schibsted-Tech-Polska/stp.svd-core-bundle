@@ -110,11 +110,17 @@ abstract class BaseCommand extends ContainerAwareCommand
         $this->cliHelper = $this->getContainer()
             ->get('svd_core.cli.helper');
 
+        $cliLock = $this->getContainer()
+            ->getParameter('svd_core.cli_lock');
+
         $this->logger = $this->createLogger();
 
         $this->registerShutdownFunctions();
-        $this->cliHelper->setFilename(str_replace(':', '_', $this->getName()) . '.lock');
-        $this->cliHelper->lock();
+
+        if ($cliLock) {
+            $this->cliHelper->setFilename(str_replace(':', '_', $this->getName()) . '.lock');
+            $this->cliHelper->lock();
+        }
 
         $this->write('Start cron ' . str_repeat('-', 50), Logger::INFO);
         $this->write('Cron parameters', Logger::INFO, $this->input->getOptions());
@@ -145,7 +151,9 @@ abstract class BaseCommand extends ContainerAwareCommand
         ));
         $this->write('End cron ' . str_repeat('=', 52), Logger::INFO);
 
-        $this->cliHelper->unlock();
+        if ($cliLock) {
+            $this->cliHelper->unlock();
+        }
     }
 
     /**

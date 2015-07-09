@@ -11,6 +11,7 @@ parameters:
     svd_core.monolog.format:            "[%%datetime%%] [%%hash%%]  %%level_name%%: %%start_tag%%%%message%%%%end_tag%% %%context%% %%extra%%\n"
     svd_core.monolog.level:             info
     svd_core.seo_page.class:            Svd\CoreBundle\Seo\SeoPage
+    svd_core.cli_lock:                  true
 
 services:
     svd_core.cipher.mcrypt:
