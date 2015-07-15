@@ -6,6 +6,9 @@ use Composer\Script\Event;
 
 /**
  * Composer
+ *
+ * @deprecated since version 1.3.24, will be removed in 1.4.
+ *             Use https://github.com/Schibsted-Tech-Polska/svd.composer-helper instead.
  */
 class Parameters
 {
