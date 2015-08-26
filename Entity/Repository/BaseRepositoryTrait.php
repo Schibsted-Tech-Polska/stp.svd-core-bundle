@@ -3,10 +3,14 @@
 namespace Svd\CoreBundle\Entity\Repository;
 
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
-use Knp\Component\Pager\Paginator;
+use InvalidArgumentException;
+use Knp\Component\Pager\Paginator as KnpPaginator;
 use Svd\CoreBundle\Entity\EntityInterface;
+use Svd\CoreBundle\Model\ModelInterface;
+use Svd\CoreBundle\Model\Virtual\Paginator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -18,7 +22,7 @@ trait BaseRepositoryTrait
     /** @var TranslatorInterface */
     protected $translator;
 
-    /** @var Paginator */
+    /** @var KnpPaginator */
     protected $paginator;
 
     /**
@@ -32,11 +36,11 @@ trait BaseRepositoryTrait
     }
 
     /**
-     * Set paginator
+     * Set KNP paginator
      *
-     * @param Paginator $paginator paginator
+     * @param KnpPaginator $paginator KNP paginator
      */
-    public function setPaginator(Paginator $paginator)
+    public function setPaginator(KnpPaginator $paginator)
     {
         $this->paginator = $paginator;
     }
@@ -113,6 +117,156 @@ trait BaseRepositoryTrait
         $result = $this->findBy($criteria, $orderBy, $limit, $offset);
 
         return $result;
+    }
+
+    /**
+     * Get paginator
+     *
+     * @param ModelInterface $model            model
+     * @param array          $criteria         criteria
+     * @param array|null     $orderBy          order by
+     * @param integer        $neighboursNumber neighbours number
+     * @param boolean        $getFirstLast     get first last
+     *
+     * @return Paginator
+     *
+     * @throws InvalidArgumentException
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    public function getPaginator(
+        ModelInterface $model,
+        array $criteria,
+        array $orderBy = null,
+        $neighboursNumber = 1,
+        $getFirstLast = false
+    ) {
+        if (!method_exists($model, 'getId')) {
+            throw new InvalidArgumentException('ModelInterface argument need to have getId method.');
+        }
+
+        $idKey = 'id';
+        $qb = $this->getPaginatorQueryBuilder($idKey, $model, $criteria, $orderBy);
+
+        $paginator = new Paginator();
+        $i = 1;
+        $first = null;
+        $previous = [];
+        $next = [];
+        $last = null;
+
+        /** @var IterableResult */
+        $iterableResult = $qb->getQuery()
+            ->iterate(null, AbstractQuery::HYDRATE_ARRAY);
+        foreach ($iterableResult as $results) {
+            $result = array_shift($results);
+            $id = $result[$idKey];
+            $isRequestedId = $id == $model->getId();
+
+            if ($i == 1 && $getFirstLast) {
+                $first = $isRequestedId ? false : $id;
+            }
+            if ($isRequestedId) {
+                $paginator->setCurrentNo($i);
+                if ($getFirstLast) {
+                    $last = false;
+                }
+            } else {
+                if ($paginator->getCurrentNo() === null) {
+                    array_unshift($previous, $id);
+                    if (count($previous) > $neighboursNumber) {
+                        array_pop($previous);
+                    }
+                } else {
+                    if (count($next) < $neighboursNumber) {
+                        array_push($next, $id);
+                    } elseif (!$getFirstLast) {
+                        break;
+                    }
+                }
+            }
+            if ($getFirstLast) {
+                $last = $id;
+                $paginator->setTotalNumber($i);
+            }
+
+            $i++;
+        }
+
+        if ($first) {
+            /** @var ModelInterface $first */
+            $first = $this->getOneBy([
+                $idKey => $first,
+            ]);
+            $paginator->setFirst($first);
+        }
+        $paginator->setPrevious($this->getNeighbours($previous, $idKey, $neighboursNumber));
+        $paginator->setNext($this->getNeighbours($next, $idKey, $neighboursNumber));
+        if ($last) {
+            /** @var ModelInterface $last */
+            $last = $this->getOneBy([
+                $idKey => $last,
+            ]);
+            $paginator->setLast($last);
+        }
+
+        return $paginator;
+    }
+
+    /**
+     * Get paginator query builder
+     *
+     * @param string         $idKey    ID key
+     * @param ModelInterface $model    model
+     * @param array          $criteria criteria
+     * @param array|null     $orderBy  order by
+     *
+     * @return mixed
+     */
+    protected function getPaginatorQueryBuilder($idKey, ModelInterface $model, array $criteria, array $orderBy = null)
+    {
+        // just to use $model object (this object could be needed when someone would like to to overwrite this method)
+        $model->getId();
+
+        $alias = 't';
+        $qb = $this->createQueryBuilder($alias)
+            ->select($alias . '.' . $idKey);
+        foreach ($criteria as $column => $value) {
+            $qb->andWhere($alias . '.' . $column . ' = :' . $column)
+                ->setParameter($column, $value);
+        }
+        if (isset($orderBy)) {
+            foreach ($orderBy as $column => $direction) {
+                $qb->addOrderBy($alias . '.' . $column, $direction);
+            }
+        }
+
+        return $qb;
+    }
+
+    /**
+     * Get neighbours
+     *
+     * @param array   $ids              IDs
+     * @param string  $idKey            ID key
+     * @param integer $neighboursNumber neighbours number
+     *
+     * @return ModelInterface[]
+     */
+    protected function getNeighbours($ids, $idKey, $neighboursNumber)
+    {
+        $neighbours = [];
+
+        foreach ($ids as $i => $id) {
+            $neighbours[] = $this->getOneBy([
+                $idKey => $id,
+            ]);
+        }
+        for ($i = count($neighbours); $i < $neighboursNumber; $i++) {
+            $neighbours[] = false;
+        }
+
+        return $neighbours;
     }
 
     /**
