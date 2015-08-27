@@ -6,6 +6,7 @@ use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
 use Knp\Component\Pager\Paginator as KnpPaginator;
 use Svd\CoreBundle\Entity\EntityInterface;
@@ -134,13 +135,9 @@ trait BaseRepositoryTrait
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function getPaginator(
-        ModelInterface $model,
-        array $criteria,
-        array $orderBy = null,
-        $neighboursNumber = 1,
-        $getFirstLast = false
-    ) {
+    public function getPaginator(ModelInterface $model, array $criteria, array $orderBy = null, $neighboursNumber = 1,
+        $getFirstLast = false)
+    {
         if (!method_exists($model, 'getId')) {
             throw new InvalidArgumentException('ModelInterface argument need to have getId method.');
         }
@@ -221,7 +218,7 @@ trait BaseRepositoryTrait
      * @param array          $criteria criteria
      * @param array|null     $orderBy  order by
      *
-     * @return mixed
+     * @return QueryBuilder
      */
     protected function getPaginatorQueryBuilder($idKey, ModelInterface $model, array $criteria, array $orderBy = null)
     {
