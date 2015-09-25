@@ -21,7 +21,7 @@ trait DeletedAtTrait
      *
      * @return self
      */
-    public function setUpdatedAt(DateTime $deletedAt)
+    public function setDeletedAt(DateTime $deletedAt)
     {
         $this->deletedAt = $deletedAt;
 
@@ -33,7 +33,7 @@ trait DeletedAtTrait
      *
      * @return DateTime
      */
-    public function getUpdatedAt()
+    public function getDeletedAt()
     {
         return $this->deletedAt;
     }
