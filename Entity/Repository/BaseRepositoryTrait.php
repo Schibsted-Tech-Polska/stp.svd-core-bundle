@@ -190,6 +190,11 @@ trait BaseRepositoryTrait
             $i++;
         }
 
+        // @FIXME: quick fix for edge case
+        if (($first === false) && ($i == 2)) {
+            $first = $last;
+        }
+
         if ($first) {
             /** @var ModelInterface $first */
             $first = $this->getOneBy([
