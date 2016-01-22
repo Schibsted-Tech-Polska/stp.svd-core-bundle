@@ -74,17 +74,3 @@ services:
         tags:
             -
                 name:                   twig.extension
-
-#    Example of using a service to change redirects in AJAX responses form Location to X-Location
-#    kernel.listener.ajax_redirect:
-#        arguments:
-#            -
-#                -                       route1
-#                -                       route2
-#                -                       route3
-#        class:                          Svd\CoreBundle\EventListener\AjaxRedirectListener
-#        tags:
-#            -
-#                event:                  kernel.response
-#                method:                 onKernelResponse
-#                name:                   kernel.event_listener
