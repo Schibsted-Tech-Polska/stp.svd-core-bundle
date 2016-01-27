@@ -31,20 +31,25 @@ class ErrorController extends BaseController
     /** @var SeoPage */
     protected $seo;
 
+    /** @var array */
+    protected $errorPages;
+
     /**
      * Constructor
      *
-     * @param Twig_Environment $twig    twig environment
-     * @param bool             $debug   debug flag
-     * @param array            $numbers error numbers
-     * @param SeoPage          $seo     seo page
+     * @param Twig_Environment $twig       twig environment
+     * @param bool             $debug      debug flag
+     * @param array            $numbers    error numbers
+     * @param SeoPage          $seo        seo page
+     * @param array            $errorPages error pages
      */
-    public function __construct(Twig_Environment $twig, $debug, array $numbers, SeoPage $seo)
+    public function __construct(Twig_Environment $twig, $debug, array $numbers, SeoPage $seo, array $errorPages)
     {
         parent::__construct($twig, $debug);
 
         $this->numbers = $numbers;
         $this->seo = $seo;
+        $this->errorPages = $errorPages;
     }
 
     /**
@@ -71,8 +76,22 @@ class ErrorController extends BaseController
 
             $currentContent = $this->getAndCleanOutputBuffering($request->headers->get('X-Php-Ob-Level', -1));
 
+            $bundle = 'SvdCoreBundle';
+            $controller = 'Error';
+            $name = $statusCode;
+
+            foreach ($this->errorPages as $errorPage) {
+                if (preg_match('#' . $errorPage['path'] . '#', $request->getPathInfo()) &&
+                    in_array($format, $errorPage['formats'])
+                ) {
+                    $bundle = $errorPage['bundle'];
+                    $controller = $errorPage['controller'];
+                    $name = str_replace('%code%', $statusCode, $errorPage['name']);
+                }
+            }
+
             return new Response($this->twig->render(
-                new TemplateReference('SvdCoreBundle', 'Error', $statusCode, $format, 'twig'),
+                new TemplateReference($bundle, $controller, $name, $format, 'twig'),
                 array(
                     'status_code'    => $statusCode,
                     'status_text'    => isset(Response::$statusTexts[$statusCode]) ? Response::$statusTexts[$statusCode] : '',
