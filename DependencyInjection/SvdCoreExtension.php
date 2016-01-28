@@ -26,6 +26,7 @@ class SvdCoreExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
+        $container->setParameter('svd_core.error_pages', (array) $config['error_pages']);
         $container->setParameter('svd_core.locales', $config['locales']);
         $container->setParameter('svd_core.urls.admin_index', $config['urls']['admin_index']);
         $container->setParameter('svd_core.urls.homepage', $config['urls']['homepage']);

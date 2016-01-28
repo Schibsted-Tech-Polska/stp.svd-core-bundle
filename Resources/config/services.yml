@@ -37,6 +37,7 @@ services:
             -                           %kernel.debug%
             -                           %svd_core.error.numbers%
             -                           "@svd_core.seo.page"
+            -                           %svd_core.error_pages%
         class:                          %svd_core.controller.error.class%
 
     svd_core.logger.helper:
