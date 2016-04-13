@@ -38,6 +38,18 @@ class Tools
     /** @const int */
     const URL_FRAGMENT = 128;
 
+    /** @var array */
+    protected static $urlParts = [
+        self::URL_SCHEME => 'URL_PART_SCHEME',
+        self::URL_HOST => 'URL_PART_HOST',
+        self::URL_PORT => 'URL_PART_PORT',
+        self::URL_USER => 'URL_PART_USER',
+        self::URL_PASS => 'URL_PART_PASSWORD',
+        self::URL_PATH => 'URL_PART_PATH',
+        self::URL_QUERY => 'URL_PART_QUERY',
+        self::URL_FRAGMENT => 'URL_PART_FRAGMENT',
+    ];
+
     /**
      * Prints a dump of the public, protected and private properties of var
      *
@@ -303,18 +315,7 @@ class Tools
      */
     public static function getUrlPartsIds()
     {
-        $urlParts = [
-            self::URL_SCHEME,
-            self::URL_HOST,
-            self::URL_PORT,
-            self::URL_USER,
-            self::URL_PASS,
-            self::URL_PATH,
-            self::URL_QUERY,
-            self::URL_FRAGMENT,
-        ];
-
-        return $urlParts;
+        return array_keys(self::$urlParts);
     }
 
     /**
@@ -324,18 +325,27 @@ class Tools
      */
     public static function getUrlPartsLabels()
     {
-        $urlParts = [
-            self::URL_SCHEME   => 'URL_PART_SCHEME',
-            self::URL_HOST     => 'URL_PART_HOST',
-            self::URL_PORT     => 'URL_PART_PORT',
-            self::URL_USER     => 'URL_PART_USER',
-            self::URL_PASS     => 'URL_PART_PASSWORD',
-            self::URL_PATH     => 'URL_PART_PATH',
-            self::URL_QUERY    => 'URL_PART_QUERY',
-            self::URL_FRAGMENT => 'URL_PART_FRAGMENT',
-        ];
+        return self::$urlParts;
+    }
 
-        return $urlParts;
+    /**
+     * Leave URL parts' labels
+     *
+     * @param int $partsToLeave parts to leave
+     *
+     * @return array
+     */
+    public static function leaveUrlPartsLabels($partsToLeave)
+    {
+        $labels = [];
+        $urlParts = self::getUrlPartsLabels();
+        foreach ($urlParts as $urlPart => $label) {
+            if ($partsToLeave & $urlPart) {
+                $labels[] = $label;
+            }
+        }
+
+        return $labels;
     }
 
     /**
