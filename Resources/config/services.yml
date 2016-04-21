@@ -63,10 +63,23 @@ services:
             -                           "@service_container"
         class:                          %svd_core.menu_builder.class%
 
+    svd_core.redis_client:
+        class:                          Predis\Client
+        arguments:
+            -                           "%rediscloud.endpoint%"
+
     svd_core.seo.page:
         arguments:
             -                           "@sonata.seo.page"
         class:                          %svd_core.seo_page.class%
+
+    svd_core.session.handler.redis:
+        class:                          Svd\CoreBundle\Session\Storage\Handler\PredisSessionHandler
+        arguments:
+            -                           "@svd_core.redis_client"
+            -
+                prefix:                 "%svd_core.session.prefix%"
+                expiretime:             "%svd_core.session.expire%"
 
     svd_core.twig.time_extension:
         arguments:

@@ -30,13 +30,16 @@ class SvdCoreExtension extends Extension
         $container->setParameter('svd_core.locales', $config['locales']);
         $container->setParameter('svd_core.urls.admin_index', $config['urls']['admin_index']);
         $container->setParameter('svd_core.urls.homepage', $config['urls']['homepage']);
+        $container->setParameter('svd_core.session.expire', $config['session']['expire']);
+        $container->setParameter('svd_core.session.prefix', $config['session']['prefix']);
+
+        $container->setParameter('rediscloud.endpoint', $config['rediscloud']['endpoint']);
 
         if ($container->hasParameter('svd_core.manager.content_service')) {
             $contentService = $container->getParameter('svd_core.manager.content_service');
         } else {
             $contentService = $config['manager']['content_service'];
         }
-
         $container->setAlias('svd_core.manager.content', $contentService);
     }
 }
