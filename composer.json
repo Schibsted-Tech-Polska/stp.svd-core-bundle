@@ -19,8 +19,8 @@
 
         "predis/predis": "~1.0",
 
-        "knplabs/knp-menu-bundle": "1.1.*",
-        "sonata-project/seo-bundle": "1.1.*"
+        "knplabs/knp-menu-bundle": "^2.1.1",
+        "sonata-project/seo-bundle": "^2.0.1"
     },
     "target-dir": "Svd/CoreBundle"
 }
