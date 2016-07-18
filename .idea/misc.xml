@@ -10,7 +10,6 @@
       <PhpUnitSettings />
     </phpunit_settings>
   </component>
-  <component name="ProjectRootManager" version="2" />
   <component name="masterDetails">
     <states>
       <state key="ScopeChooserConfigurable.UI">
@@ -27,4 +26,3 @@
     </states>
   </component>
 </project>
-
