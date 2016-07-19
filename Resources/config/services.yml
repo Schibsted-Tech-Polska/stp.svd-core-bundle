@@ -22,12 +22,12 @@ services:
     svd_core.cli.helper:
         arguments:
             -                           %svd_core.command.lock_path%
-            -                           @svd_core.logger.helper
+            -                           "@svd_core.logger.helper"
         class:                          Svd\CoreBundle\Helper\CliHelper
 
     svd_core.console.formatter:
         arguments:
-            -                           @session
+            -                           "@session"
             -                           %svd_core.monolog.format%
         class:                          Svd\CoreBundle\Formatter\ConsoleFormatter
 
@@ -42,8 +42,8 @@ services:
 
     svd_core.logger.helper:
         arguments:
-            -                           @logger
-            -                           @session
+            -                           "@logger"
+            -                           "@session"
             -                           %svd_core.log_dir.pattern%
             -                           %svd_core.monolog.format%
             -                           %svd_core.monolog.level%
@@ -83,7 +83,7 @@ services:
 
     svd_core.twig.time_extension:
         arguments:
-            -                           @service_container
+            -                           "@service_container"
         class:                          Svd\CoreBundle\Twig\TimeExtension
         tags:
             -
