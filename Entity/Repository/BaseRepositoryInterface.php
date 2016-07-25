@@ -92,4 +92,14 @@ interface BaseRepositoryInterface
      * @return self
      */
     public function delete(EntityInterface $entity, $flush = false, $clear = false);
+
+    /**
+     * Iterate by
+     *
+     * @param array      $criteria criteria
+     * @param array|null $orderBy  order by
+     *
+     * @return object[]
+     */
+    public function iterateBy(array $criteria = [], array $orderBy = ['id' => 'asc']);
 }

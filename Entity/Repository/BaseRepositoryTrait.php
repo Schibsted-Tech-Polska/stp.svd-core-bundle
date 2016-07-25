@@ -47,16 +47,6 @@ trait BaseRepositoryTrait
     }
 
     /**
-     * Finds a single entity by a set of criteria
-     *
-     * @param array      $criteria criteria
-     * @param array|null $orderBy  sort criteria
-     *
-     * @return object|null
-     */
-    abstract public function findOneBy(array $criteria, array $orderBy = null);
-
-    /**
      * Get one with full data
      *
      * @param array      $criteria criteria
@@ -92,18 +82,6 @@ trait BaseRepositoryTrait
     }
 
     /**
-     * Finds entities by a set of criteria
-     *
-     * @param array      $criteria criteria
-     * @param array|null $orderBy  sort criteria
-     * @param int        $limit    limit
-     * @param int        $offset   offset
-     *
-     * @return array
-     */
-    abstract public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null);
-
-    /**
      * Get all with full data
      *
      * @param array      $criteria criteria
@@ -118,6 +96,105 @@ trait BaseRepositoryTrait
         $result = $this->findBy($criteria, $orderBy, $limit, $offset);
 
         return $result;
+    }
+
+    /**
+     * Insert
+     *
+     * @param EntityInterface $entity entity
+     * @param bool            $flush  flag, if flush should be done?
+     * @param bool            $clear  flag, if clear should be done?
+     *
+     * @return self
+     */
+    public function insert(EntityInterface $entity, $flush = false, $clear = false)
+    {
+        return $this->save($entity, $flush, $clear);
+    }
+
+    /**
+     * Update
+     *
+     * @param EntityInterface $entity entity
+     * @param bool            $flush  flag, if flush should be done?
+     * @param bool            $clear  flag, if clear should be done?
+     *
+     * @return self
+     */
+    public function update(EntityInterface $entity, $flush = false, $clear = false)
+    {
+        return $this->save($entity, $flush, $clear);
+    }
+
+    /**
+     * Delete
+     *
+     * @param EntityInterface $entity entity
+     * @param bool            $flush  flag, if flush should be done?
+     * @param bool            $clear  flag, if clear should be done?
+     *
+     * @return self
+     */
+    public function delete(EntityInterface $entity, $flush = false, $clear = false)
+    {
+        $this->getEntityManager()
+            ->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()
+                ->flush();
+        }
+        if ($clear) {
+            $this->getEntityManager()
+                ->clear();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Iterate by
+     *
+     * @param array      $criteria criteria
+     * @param array|null $orderBy  order by
+     *
+     * @return object[]
+     */
+    public function iterateBy(array $criteria = [], array $orderBy = ['id' => 'asc'])
+    {
+        $alias = 'repo';
+
+        /** @var QueryBuilder $qb */
+        $qb = $this->createQueryBuilder($alias)
+            ->select($alias)
+        ;
+
+        if (!empty($criteria['id'])) {
+            $qb->andWhere($alias . '.id = :id')
+                ->setParameter('id', $criteria['id'])
+            ;
+        }
+
+        if (isset($orderBy)) {
+            foreach ($orderBy as $column => $direction) {
+                $qb->addOrderBy($alias . '.' . $column, $direction);
+            }
+        }
+
+        $results = $qb->getQuery()
+            ->iterate()
+        ;
+
+        // @README: take care about:
+        //  - returning an element instead of one row array of elements, and...
+        //  - returning unused memory
+        foreach ($results as $result) {
+            $result = $result[0];
+
+            yield $result;
+
+            $this->getEntityManager()->clear();
+        }
     }
 
     /**
@@ -272,67 +349,6 @@ trait BaseRepositoryTrait
     }
 
     /**
-     * Gets entity manager
-     *
-     * @return EntityManager
-     */
-    abstract protected function getEntityManager();
-
-    /**
-     * Insert
-     *
-     * @param EntityInterface $entity entity
-     * @param bool            $flush  flag, if flush should be done?
-     * @param bool            $clear  flag, if clear should be done?
-     *
-     * @return self
-     */
-    public function insert(EntityInterface $entity, $flush = false, $clear = false)
-    {
-        return $this->save($entity, $flush, $clear);
-    }
-
-    /**
-     * Update
-     *
-     * @param EntityInterface $entity entity
-     * @param bool            $flush  flag, if flush should be done?
-     * @param bool            $clear  flag, if clear should be done?
-     *
-     * @return self
-     */
-    public function update(EntityInterface $entity, $flush = false, $clear = false)
-    {
-        return $this->save($entity, $flush, $clear);
-    }
-
-    /**
-     * Delete
-     *
-     * @param EntityInterface $entity entity
-     * @param bool            $flush  flag, if flush should be done?
-     * @param bool            $clear  flag, if clear should be done?
-     *
-     * @return self
-     */
-    public function delete(EntityInterface $entity, $flush = false, $clear = false)
-    {
-        $this->getEntityManager()
-            ->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()
-                ->flush();
-        }
-        if ($clear) {
-            $this->getEntityManager()
-                ->clear();
-        }
-
-        return $this;
-    }
-
-    /**
      * Save
      *
      * @param EntityInterface $entity entity
@@ -407,4 +423,33 @@ trait BaseRepositoryTrait
 
         return $this;
     }
+
+    /**
+     * Finds a single entity by a set of criteria
+     *
+     * @param array      $criteria criteria
+     * @param array|null $orderBy  sort criteria
+     *
+     * @return object|null
+     */
+    abstract public function findOneBy(array $criteria, array $orderBy = null);
+
+    /**
+     * Finds entities by a set of criteria
+     *
+     * @param array      $criteria criteria
+     * @param array|null $orderBy  sort criteria
+     * @param int        $limit    limit
+     * @param int        $offset   offset
+     *
+     * @return array
+     */
+    abstract public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null);
+
+    /**
+     * Gets entity manager
+     *
+     * @return EntityManager
+     */
+    abstract protected function getEntityManager();
 }
