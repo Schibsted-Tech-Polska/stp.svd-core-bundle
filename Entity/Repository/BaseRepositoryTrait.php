@@ -158,7 +158,7 @@ trait BaseRepositoryTrait
      * @param array      $criteria criteria
      * @param array|null $orderBy  order by
      *
-     * @return object[]
+     * @return EntityInterface[]
      */
     public function iterateBy(array $criteria = [], array $orderBy = ['id' => 'asc'])
     {
