@@ -65,28 +65,31 @@ interface BaseRepositoryInterface
      *
      * @param EntityInterface $entity entity
      * @param bool            $flush  flag, if flush should be done?
+     * @param bool            $clear  flag, if clear should be done?
      *
      * @return self
      */
-    public function insert(EntityInterface $entity, $flush = false);
+    public function insert(EntityInterface $entity, $flush = false, $clear = false);
 
     /**
      * Update
      *
      * @param EntityInterface $entity entity
      * @param bool            $flush  flag, if flush should be done?
+     * @param bool            $clear  flag, if clear should be done?
      *
      * @return self
      */
-    public function update(EntityInterface $entity, $flush = false);
+    public function update(EntityInterface $entity, $flush = false, $clear = false);
 
     /**
      * Delete
      *
      * @param EntityInterface $entity entity
      * @param bool            $flush  flag, if flush should be done?
+     * @param bool            $clear  flag, if clear should be done?
      *
      * @return self
      */
-    public function delete(EntityInterface $entity, $flush = false);
+    public function delete(EntityInterface $entity, $flush = false, $clear = false);
 }

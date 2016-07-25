@@ -283,12 +283,13 @@ trait BaseRepositoryTrait
      *
      * @param EntityInterface $entity entity
      * @param bool            $flush  flag, if flush should be done?
+     * @param bool            $clear  flag, if clear should be done?
      *
      * @return self
      */
-    public function insert(EntityInterface $entity, $flush = false)
+    public function insert(EntityInterface $entity, $flush = false, $clear = false)
     {
-        return $this->save($entity, $flush);
+        return $this->save($entity, $flush, $clear);
     }
 
     /**
@@ -296,12 +297,13 @@ trait BaseRepositoryTrait
      *
      * @param EntityInterface $entity entity
      * @param bool            $flush  flag, if flush should be done?
+     * @param bool            $clear  flag, if clear should be done?
      *
      * @return self
      */
-    public function update(EntityInterface $entity, $flush = false)
+    public function update(EntityInterface $entity, $flush = false, $clear = false)
     {
-        return $this->save($entity, $flush);
+        return $this->save($entity, $flush, $clear);
     }
 
     /**
@@ -309,10 +311,11 @@ trait BaseRepositoryTrait
      *
      * @param EntityInterface $entity entity
      * @param bool            $flush  flag, if flush should be done?
+     * @param bool            $clear  flag, if clear should be done?
      *
      * @return self
      */
-    public function delete(EntityInterface $entity, $flush = false)
+    public function delete(EntityInterface $entity, $flush = false, $clear = false)
     {
         $this->getEntityManager()
             ->remove($entity);
@@ -320,6 +323,10 @@ trait BaseRepositoryTrait
         if ($flush) {
             $this->getEntityManager()
                 ->flush();
+        }
+        if ($clear) {
+            $this->getEntityManager()
+                ->clear();
         }
 
         return $this;
@@ -330,10 +337,11 @@ trait BaseRepositoryTrait
      *
      * @param EntityInterface $entity entity
      * @param bool            $flush  flag, if flush should be done?
+     * @param bool            $clear  flag, if clear should be done?
      *
      * @return self
      */
-    protected function save(EntityInterface $entity, $flush = false)
+    protected function save(EntityInterface $entity, $flush = false, $clear = false)
     {
         $this->getEntityManager()
             ->persist($entity);
@@ -341,6 +349,10 @@ trait BaseRepositoryTrait
         if ($flush) {
             $this->getEntityManager()
                 ->flush();
+        }
+        if ($clear) {
+            $this->getEntityManager()
+                ->clear();
         }
 
         return $this;
