@@ -97,6 +97,7 @@ class ErrorController extends BaseController
                     foreach ($errorPage['view_vars'] as $key => $value) {
                         $context[$key] = $value;
                     }
+                    break;
                 }
             }
 

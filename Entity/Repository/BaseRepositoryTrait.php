@@ -141,13 +141,37 @@ trait BaseRepositoryTrait
             ->remove($entity);
 
         if ($flush) {
-            $this->getEntityManager()
-                ->flush();
+            $this->flush();
         }
         if ($clear) {
-            $this->getEntityManager()
-                ->clear();
+            $this->clear();
         }
+
+        return $this;
+    }
+
+    /**
+     * Flush
+     *
+     * @return self
+     */
+    public function flush()
+    {
+        $this->getEntityManager()
+            ->flush();
+
+        return $this;
+    }
+
+    /**
+     * Clear
+     *
+     * @return self
+     */
+    public function clear()
+    {
+        $this->getEntityManager()
+            ->clear();
 
         return $this;
     }
@@ -363,12 +387,10 @@ trait BaseRepositoryTrait
             ->persist($entity);
 
         if ($flush) {
-            $this->getEntityManager()
-                ->flush();
+            $this->flush();
         }
         if ($clear) {
-            $this->getEntityManager()
-                ->clear();
+            $this->clear();
         }
 
         return $this;
