@@ -20,7 +20,8 @@
         "predis/predis": "~1.0",
 
         "knplabs/knp-menu-bundle": "^2.1.1",
-        "sonata-project/seo-bundle": "^2.0.1"
+        "sonata-project/seo-bundle": "^2.0.1",
+        "symfony/symfony": ">=3.0"
     },
     "target-dir": "Svd/CoreBundle"
 }

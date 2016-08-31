@@ -6,13 +6,11 @@ use InvalidArgumentException;
 use Svd\CoreBundle\Seo\SeoPage;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Bundle\TwigBundle\Controller\ExceptionController as BaseController;
+use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\FlattenException;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 use Twig_Environment;
-
-//use Symfony\Component\Debug\Exception\FlattenException;
 
 /**
  * Controller /as a service/
