@@ -56,15 +56,14 @@ class ErrorController extends BaseController
      * @param Request              $request   request
      * @param FlattenException     $exception a lattenException instance
      * @param DebugLoggerInterface $logger    a DebugLoggerInterface instance
-     * @param string               $format    the format to use for rendering (html, xml, ...)
      *
      * @return Response
      *
      * @throws InvalidArgumentException When the exception template does not exist
      */
-    public function showAction(Request $request, FlattenException $exception, DebugLoggerInterface $logger = null,
-        $format = 'html')
+    public function showAction(Request $request, FlattenException $exception, DebugLoggerInterface $logger = null)
     {
+        $format = $request->getRequestFormat();
         $statusCode = $exception->getStatusCode();
         $statusText = isset(Response::$statusTexts[$statusCode]) ? Response::$statusTexts[$statusCode] : '';
 
