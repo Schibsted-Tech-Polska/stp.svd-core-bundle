@@ -5,7 +5,7 @@ parameters:
     svd_core.error.numbers:
         -                               403
         -                               404
-    svd_core.fixtures.file_path:        %kernel.root_dir%/fixtures/%%filename%%.txt
+    svd_core.fixtures.file_path:        "%kernel.root_dir%/fixtures/%%filename%%.txt"
     svd_core.log_dir.pattern:           /var/log/%%service%%/projectx/%%filename%%
     svd_core.menu_builder.class:        Svd\CoreBundle\Menu\MenuBuilder
     svd_core.monolog.format:            "[%%datetime%%] [%%hash%%]  %%level_name%%: %%start_tag%%%%message%%%%end_tag%% %%context%% %%extra%%\n"
@@ -16,37 +16,37 @@ parameters:
 services:
     svd_core.cipher.mcrypt:
         arguments:
-            -                           %secret%
-        class:                          %svd_core.cipher.mcrypt.class%
+            -                           "%secret%"
+        class:                          "%svd_core.cipher.mcrypt.class%"
 
     svd_core.cli.helper:
         arguments:
-            -                           %svd_core.command.lock_path%
+            -                           "%svd_core.command.lock_path%"
             -                           "@svd_core.logger.helper"
         class:                          Svd\CoreBundle\Helper\CliHelper
 
     svd_core.console.formatter:
         arguments:
             -                           "@session"
-            -                           %svd_core.monolog.format%
+            -                           "%svd_core.monolog.format%"
         class:                          Svd\CoreBundle\Formatter\ConsoleFormatter
 
     svd_core.controller.error:
         arguments:
             -                           "@twig"
-            -                           %kernel.debug%
-            -                           %svd_core.error.numbers%
+            -                           "%kernel.debug%"
+            -                           "%svd_core.error.numbers%"
             -                           "@svd_core.seo.page"
-            -                           %svd_core.error_pages%
-        class:                          %svd_core.controller.error.class%
+            -                           "%svd_core.error_pages%"
+        class:                          "%svd_core.controller.error.class%"
 
     svd_core.logger.helper:
         arguments:
             -                           "@logger"
             -                           "@session"
-            -                           %svd_core.log_dir.pattern%
-            -                           %svd_core.monolog.format%
-            -                           %svd_core.monolog.level%
+            -                           "%svd_core.log_dir.pattern%"
+            -                           "%svd_core.monolog.format%"
+            -                           "%svd_core.monolog.level%"
         class:                          Svd\CoreBundle\Manager\LoggerManager
 
     svd_core.manager.content_real:
@@ -54,14 +54,14 @@ services:
 
     svd_core.manager.content_test:
         arguments:
-            -                           %svd_core.fixtures.file_path%
+            -                           "%svd_core.fixtures.file_path%"
         class:                          Svd\CoreBundle\Manager\ContentFileManager
 
     svd_core.menu_builder:
         arguments:
             -                           "@knp_menu.factory"
             -                           "@service_container"
-        class:                          %svd_core.menu_builder.class%
+        class:                          "%svd_core.menu_builder.class%"
 
     svd_core.redis_client:
         class:                          Predis\Client
@@ -71,7 +71,7 @@ services:
     svd_core.seo.page:
         arguments:
             -                           "@sonata.seo.page"
-        class:                          %svd_core.seo_page.class%
+        class:                          "%svd_core.seo_page.class%"
 
     svd_core.session.handler.redis:
         class:                          Svd\CoreBundle\Session\Storage\Handler\PredisSessionHandler
