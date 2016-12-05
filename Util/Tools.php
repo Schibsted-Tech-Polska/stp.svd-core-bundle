@@ -40,14 +40,14 @@ class Tools
 
     /** @var array */
     protected static $urlParts = [
-        self::URL_SCHEME => 'URL_PART_SCHEME',
-        self::URL_HOST => 'URL_PART_HOST',
-        self::URL_PORT => 'URL_PART_PORT',
-        self::URL_USER => 'URL_PART_USER',
-        self::URL_PASS => 'URL_PART_PASSWORD',
-        self::URL_PATH => 'URL_PART_PATH',
-        self::URL_QUERY => 'URL_PART_QUERY',
-        self::URL_FRAGMENT => 'URL_PART_FRAGMENT',
+        'URL_PART_SCHEME' => self::URL_SCHEME,
+        'URL_PART_HOST' => self::URL_HOST,
+        'URL_PART_PORT' => self::URL_PORT,
+        'URL_PART_USER' => self::URL_USER,
+        'URL_PART_PASSWORD' => self::URL_PASS,
+        'URL_PART_PATH' => self::URL_PATH,
+        'URL_PART_QUERY' => self::URL_QUERY,
+        'URL_PART_FRAGMENT' => self::URL_FRAGMENT,
     ];
 
     /**
@@ -315,7 +315,7 @@ class Tools
      */
     public static function getUrlPartsIds()
     {
-        return array_keys(self::$urlParts);
+        return array_values(self::$urlParts);
     }
 
     /**
@@ -339,7 +339,7 @@ class Tools
     {
         $labels = [];
         $urlParts = self::getUrlPartsLabels();
-        foreach ($urlParts as $urlPart => $label) {
+        foreach ($urlParts as $label => $urlPart) {
             if ($partsToLeave & $urlPart) {
                 $labels[] = $label;
             }
